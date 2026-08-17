@@ -71,22 +71,17 @@ Send requests to http://localhost:3000.
 
 API Testing Evidence
 
-## Donors API
-
-- POST /donors  
-  ![Add Donor](https://github.com/sameeksha-0507/blood-donor-system/blob/main/screenshot/donors-post.png?raw=true)
-
+Donors API
+- POST /donors
+  ![Add Donor](screenshot/donors-post.png)
 - GET /donors  
-  ![Get Donors](https://github.com/sameeksha-0507/blood-donor-system/blob/main/screenshot/donors-get.png?raw=true)
-
+  ![Get Donors](screenshot/donors-get.png)
 - PUT /donors/:id  
-  ![Update Donor](https://github.com/sameeksha-0507/blood-donor-system/blob/main/screenshot/donors-put.png?raw=true)
-
+  ![Update Donor](screenshot/donors-put.png)
 - DELETE /donors/:id  
-  ![Delete Donor](https://github.com/sameeksha-0507/blood-donor-system/blob/main/screenshot/donor-delete.png?raw=true)
+  ![Delete Donor](screenshot/donor-delete.png)
+- Updated Donor Example 
 
-- Updated Donor Example  
-  ![Updated Donor](https://github.com/sameeksha-0507/blood-donor-system/blob/main/screenshot/donors-updated.png?raw=true)
-
+  ![Updated Donor](screenshot/donors-updated.png)
 
 
