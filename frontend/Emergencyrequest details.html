@@ -1,0 +1,132 @@
+
+<html>
+<head>
+  <title>Emergency Request</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f2f6f9;
+      margin: 0;
+      padding: 20px;
+    }
+    .request-box {
+      background: #ffffff;
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 500px;
+      margin: auto;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+    h2 {
+      text-align: center;
+      color: darkred;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button {
+      margin-top: 15px;
+      padding: 10px;
+      width: 100%;
+      background: rgb(205, 56, 66);
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    button:hover {
+      background: rgb(106, 9, 9);
+    }
+  </style>
+</head>
+<body>
+  <nav style="background:#b0c8cd; padding:10px;">
+  <a href="home.html" style="color:rgb(19, 15, 15); margin-right:15px; text-decoration:none;">Home</a>
+  <a href="Registerform.html" style="color:rgb(18, 14, 14); margin-right:15px; text-decoration:none;">Register Donor</a>
+  <a href="Finddonors.html" style="color:rgb(19, 15, 15); margin-right:15px; text-decoration:none;">Find Donors</a>
+  <a href="Emergencyrequest details.html" style="color:rgb(19, 15, 15); margin-right:15px; text-decoration:none;">Emergency Requests</a>
+  <a href="request details.html" style="color:rgb(19, 15, 15); margin-right:15px; text-decoration:none;">Requests details</a>
+  </nav>
+
+  <div class="request-box">
+    <h2>Emergency Request Form</h2>
+    <form id="requestForm">
+      <label for="patient">Patient Name:</label>
+      <input type="text" id="patient" placeholder="Enter patient name">
+
+      <label for="reqBlood">Blood Group Required:</label>
+      <select id="reqBlood">
+        <option value="">Select Blood Group</option>
+        <option>A+</option><option>A-</option>
+        <option>B+</option><option>B-</option>
+        <option>O+</option><option>O-</option>
+        <option>AB+</option><option>AB-</option>
+      </select>
+
+      <label for="hospital">Hospital / Location:</label>
+      <input type="text" id="hospital" placeholder="Enter hospital or city">
+
+      <label for="contact">Contact Number:</label>
+      <input type="text" id="contact" placeholder="Enter contact number">
+
+      <label for="urgency">Urgency:</label>
+      <select id="urgency">
+        <option value="">Select urgency</option>
+        <option>Critical</option>
+        <option>Within 24 hours</option>
+        <option>Normal</option>
+      </select>
+
+      <label for="notes">Additional Notes:</label>
+      <textarea id="notes" placeholder="Any extra details..."></textarea>
+
+      <button type="submit">Submit Request</button>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById("requestForm").addEventListener("submit", async function(event) {
+      event.preventDefault();
+
+      const patient = document.getElementById("patient").value.trim();
+      const blood = document.getElementById("reqBlood").value.trim();
+      const hospital = document.getElementById("hospital").value.trim();
+      const contact = document.getElementById("contact").value.trim();
+      const urgency = document.getElementById("urgency").value.trim();
+      const notes = document.getElementById("notes").value.trim();
+
+      if (!patient || !blood || !hospital || !contact || !urgency) {
+        alert("Please fill in all required fields.");
+        return;
+      }
+
+      try {
+        const response = await fetch("http://localhost:3000/requests", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ patient, blood, hospital, contact, urgency, notes })
+        });
+
+        const result = await response.text();
+        alert(result);
+
+        // Clear form after successful submission
+        document.getElementById("requestForm").reset();
+      } catch (error) {
+        alert("Error submitting request: " + error);
+      }
+    });
+  </script>
+
+</body>
+</html>

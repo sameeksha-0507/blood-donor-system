@@ -1,0 +1,56 @@
+<html>
+    <head>
+        <title>Blood donation</title>
+    </head>
+    <style>
+          nav{
+                display: flex;
+                flex-direction: row;
+                margin-top:20px;
+                background-image: url("images/gradient.jpg.jpg"); 
+                width:100%;
+                height:40px;
+                padding-top:20px;
+            }
+            a{
+                margin:60px;
+                justify-content:space-evenly;
+                color: azure;
+            }
+            body{
+                 background-image: url("images/donor2.jpg"); 
+                 background-size:cover;
+                 background-position:center;
+                 background-color: rgba(128, 198, 208, 0.5); 
+                  background-blend-mode: lighten; 
+
+            }
+            button{
+                flex-direction:row;
+                background-color: brown;
+                color: aliceblue;
+                margin-top:50px;
+                margin-left:100px;
+                margin-right:60px;
+                width:400px;
+                height:40px;
+                border-radius:10px;
+            }
+
+        </style>
+    <body>
+        <nav>
+     <div>
+            <a href="home.html">Home</a>
+            <a href="Registerform.html">Register form</a>
+            <a href="Finddonors.html">Find donors</a>
+            <a href="Emergencyrequest.html">Emergency request</a>
+            <a href="Request details.html">Request details</a>
+         </div>
+    </nav>
+    <div style="text-align: center; font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;color: brown;font-style:italic;font-size:40px;margin-top:40px;">Every drop <span style="color:rgb(31, 15, 15);">matters.</span></div>
+    <button onclick="window.location.href='Registerform.html'">Register as a donor</button>
+    <button onclick="window.location.href='Finddonors.html'">Find donor</button>
+
+
+</html>

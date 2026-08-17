@@ -1,0 +1,132 @@
+<html>
+    <head>
+      <title>Donor Registration</title>
+     <style>
+     body{
+        background-image: url("images/hospital.jpg.jpg"); 
+        background-size:cover;
+         background-position:center;
+        background-color: rgba(128, 198, 208, 0.5); 
+        background-blend-mode: lighten; 
+
+    }
+
+    .form-box {
+      background: rgba(255, 255, 255, 0.85);
+      width: 400px;
+      margin: 50px auto;
+      padding: 20px;
+      border-radius: 10px;
+    }
+
+    h2 {
+      text-align: center;
+      color: darkred;
+    }
+
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    button {
+      margin-top: 15px;
+      width: 100%;
+      padding: 10px;
+      background-color: rgb(177, 38, 38);
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    button:hover {
+      background-color: rgb(101, 9, 9);
+    }
+  </style>
+</head>
+<body>
+ <nav style=" padding:10px;">
+  <a href="home.html" style="color:rgb(50, 70, 104); margin-right:15px; text-decoration:none;">Home</a>
+  <a href="Registerform.html" style="color:rgb(50, 70, 104); margin-right:15px; text-decoration:none;">Register Donor</a>
+  <a href="Finddonors.html" style="color:rgb(50, 70, 104); margin-right:15px; text-decoration:none;">Find Donors</a>
+  <a href="Emergencyrequest details.html" style="color:rgb(50, 70, 104); margin-right:15px; text-decoration:none;">Emergency Requests</a>
+  <a href="request details.html" style="color:rgb(50, 70, 104); margin-right:15px; text-decoration:none;">Requests details</a>
+  <div class="form-box">
+    <h2>Donor Registration</h2>
+    <form id="donorForm">
+      <label for="name">Full Name:</label>
+      <input type="text" id="name" required>
+
+      <label for="blood">Blood Group:</label>
+      <select id="blood" required>
+        <option value="">Select</option>
+        <option>A+</option>
+        <option>A-</option>
+        <option>B+</option>
+        <option>B-</option>
+        <option>O+</option>
+        <option>O-</option>
+        <option>AB+</option>
+        <option>AB-</option>
+      </select>
+
+      <label for="contact">Contact Number:</label>
+      <input type="tel" id="contact" required>
+
+      <label for="location">Location:</label>
+      <input type="text" id="location" required>
+
+      <label for="availability">Availability:(available/unavailable)</label>
+      <textarea id="availability" rows="3"></textarea>
+
+      <button type="submit">Register</button>
+    </form>
+  </div>
+<script>
+document.getElementById("donorForm").addEventListener("submit", async function(event) {
+  event.preventDefault();
+
+  const contact = document.getElementById("contact").value;
+
+  // Validate contact number
+  if (contact.length !== 10 || isNaN(contact)) {
+    alert("Enter a valid 10-digit number.");
+    return;
+  }
+
+  // Collect all donor fields
+  const donor = {
+    name: document.getElementById("name").value,
+    blood: document.getElementById("blood").value,
+    contact: contact,
+    location: document.getElementById("location").value,
+    availability: document.getElementById("availability").value
+  };
+
+  try {
+    const response = await fetch("http://localhost:3000/donors", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(donor)
+    });
+
+    const result = await response.text();
+    alert(result); // should show "Donor added successfully"
+  } catch (error) {
+    alert("Error connecting to backend: " + error);
+  }
+});
+</script>
+</body>
+</html>

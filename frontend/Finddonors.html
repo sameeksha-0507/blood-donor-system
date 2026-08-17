@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Find Donors</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #c9d6db;
+      margin: 0;
+      padding: 20px;
+    }
+    .search-box {
+      background: rgb(62, 119, 110);
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+      margin-bottom: 20px;
+      margin-top: 30px;
+    }
+    label {
+      margin-right: 10px;
+      font-weight: bold;
+    }
+    select, input {
+      margin-right: 20px;
+      padding: 5px;
+    }
+    button {
+      padding: 6px 12px;
+      background: darkred;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: maroon;
+    }
+    .donor-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    .donor-table th, .donor-table td {
+      border: 2px solid #1f0d0d;
+      padding: 8px;
+      text-align: center;
+    }
+    .donor-table th {
+      background: #eee;
+    }
+  </style>
+</head>
+<body>
+  <nav style="background:#b0c8cd; padding:10px;">
+  <a href="home.html" style="color:rgb(19, 15, 15); margin-right:15px; text-decoration:none;">Home</a>
+  <a href="Registerform.html" style="color:rgb(18, 14, 14); margin-right:15px; text-decoration:none;">Register Donor</a>
+  <a href="Finddonors.html" style="color:rgb(19, 15, 15); margin-right:15px; text-decoration:none;">Find Donors</a>
+  <a href="Emergencyrequest details.html" style="color:rgb(19, 15, 15); margin-right:15px; text-decoration:none;">Emergency Requests</a>
+  <a href="request details.html" style="color:rgb(19, 15, 15); margin-right:15px; text-decoration:none;">Requests details</a>
+  <div class="search-box">
+    <form id="searchForm">
+      <label for="blood">Blood Group:</label>
+      <select id="blood">
+        <option value="">Any</option>
+        <option>A+</option><option>A-</option>
+        <option>B+</option><option>B-</option>
+        <option>O+</option><option>O-</option>
+        <option>AB+</option><option>AB-</option>
+      </select>
+
+      <label for="location">Location:</label>
+      <input type="text" id="location" placeholder="Enter city">
+
+      <label for="availability">Availability:</label>
+      <select id="availability">
+        <option value="">Any</option>
+        <option>Available</option>
+        <option>Unavailable</option>
+      </select>
+
+      <button type="submit">Search</button>
+    </form>
+  </div>
+
+  <table class="donor-table" id="donorTable">
+    <tr>
+      <th>Name</th>
+      <th>Blood Group</th>
+      <th>Location</th>
+      <th>Availability</th>
+      <th>Contact</th>
+      <th>Actions</th>
+    </tr>
+  </table>
+
+<script>
+async function loadDonors(filters = {}) {
+  try {
+    const response = await fetch("http://localhost:3000/donors");
+    const donors = await response.json();
+
+    const table = document.getElementById("donorTable");
+    table.innerHTML = `
+      <tr>
+        <th>Name</th>
+        <th>Blood Group</th>
+        <th>Location</th>
+        <th>Availability</th>
+        <th>Contact</th>
+        <th>Actions</th>
+      </tr>
+    `;
+
+    
+    const filtered = donors.filter(donor => {
+      return (!filters.blood || donor.blood === filters.blood) &&
+             (!filters.location || donor.location.toLowerCase().includes(filters.location)) &&
+             (!filters.availability || (donor.availability || "").toLowerCase().includes(filters.availability));
+    });
+
+    filtered.forEach(donor => {
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td>${donor.name}</td>
+        <td>${donor.blood}</td>
+        <td>${donor.location}</td>
+        <td>${donor.availability || "Not specified"}</td>
+        <td>${donor.contact}</td>
+        <td>
+          <button onclick="updateDonor(${donor.id})">Update</button>
+          <button onclick="deleteDonor(${donor.id})">Delete</button>
+        </td>
+      `;
+      table.appendChild(row);
+    });
+  } catch (error) {
+    alert("Error loading donors: " + error);
+  }
+}
+
+async function deleteDonor(id) {
+  if (!confirm("Are you sure you want to delete this donor?")) return;
+  try {
+    const response = await fetch(`http://localhost:3000/donors/${id}`, { method: "DELETE" });
+    const result = await response.text();
+    alert(result);
+    loadDonors(); // reload table
+  } catch (error) {
+    alert("Error deleting donor: " + error);
+  }
+}
+
+async function updateDonor(id) {
+  const name = prompt("Enter new name:");
+  const blood = prompt("Enter new blood group:");
+  const contact = prompt("Enter new contact number:");
+  const location = prompt("Enter new location:");
+  const availability = prompt("Enter new availability:");
+
+  if (!name || !blood || !contact || !location) {
+    alert("All fields except availability are required.");
+    return;
+  }
+
+  try {
+    const response = await fetch(`http://localhost:3000/donors/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, blood, contact, location, availability })
+    });
+    const result = await response.text();
+    alert(result);
+    loadDonors(); // reload table
+  } catch (error) {
+    alert("Error updating donor: " + error);
+  }
+}
+
+
+document.getElementById("searchForm").addEventListener("submit", function(event) {
+  event.preventDefault();
+  const blood = document.getElementById("blood").value.trim();
+  const location = document.getElementById("location").value.trim().toLowerCase();
+  const availability = document.getElementById("availability").value.trim().toLowerCase();
+  loadDonors({ blood, location, availability });
+});
+
+loadDonors();
+</script>
+
+</body>
+</html>
