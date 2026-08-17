@@ -81,6 +81,7 @@ Donors API
 - DELETE /donors/:id  
   ![Delete Donor](screenshot/donor-delete.png)
 - Updated Donor Example 
+
   ![Updated Donor](screenshot/donors-updated.png)
 
 
