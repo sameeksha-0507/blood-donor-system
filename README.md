@@ -18,7 +18,7 @@ npm install
 
 Start the server:
 bash
-node server.js
+nodemon server.js
 
 The backend will run at:
 http://localhost:3000
