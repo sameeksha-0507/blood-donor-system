@@ -69,19 +69,5 @@ API Testing
 You can test the APIs using Postman:
 Send requests to http://localhost:3000.
 
-API Testing Evidence
-
-Donors API
-- POST /donors
-  ![Add Donor](screenshot/donors-post.png)
-- GET /donors  
-  ![Get Donors](screenshot/donors-get.png)
-- PUT /donors/:id  
-  ![Update Donor](screenshot/donors-put.png)
-- DELETE /donors/:id  
-  ![Delete Donor](screenshot/donor-delete.png)
-- Updated Donor Example 
-
-  ![Updated Donor](screenshot/donors-updated.png)
 
 
