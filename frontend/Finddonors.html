@@ -101,19 +101,8 @@ async function loadDonors(filters = {}) {
     const donors = await response.json();
 
     const table = document.getElementById("donorTable");
-    table.innerHTML = `
-      <tr>
-        <th>Name</th>
-        <th>Blood Group</th>
-        <th>Location</th>
-        <th>Availability</th>
-        <th>Contact</th>
-        <th>Actions</th>
-      </tr>
-    `;
-
-    
-    const filtered = donors.filter(donor => {
+    table.innerHTML = table.rows[0].outerHTML;
+     const filtered = donors.filter(donor => {
       return (!filters.blood || donor.blood === filters.blood) &&
              (!filters.location || donor.location.toLowerCase().includes(filters.location)) &&
              (!filters.availability || (donor.availability || "").toLowerCase().includes(filters.availability));
@@ -145,7 +134,7 @@ async function deleteDonor(id) {
     const response = await fetch(`http://localhost:3000/donors/${id}`, { method: "DELETE" });
     const result = await response.text();
     alert(result);
-    loadDonors(); // reload table
+    loadDonors(); 
   } catch (error) {
     alert("Error deleting donor: " + error);
   }
@@ -170,8 +159,9 @@ async function updateDonor(id) {
       body: JSON.stringify({ name, blood, contact, location, availability })
     });
     const result = await response.text();
+    
     alert(result);
-    loadDonors(); // reload table
+    loadDonors(); 
   } catch (error) {
     alert("Error updating donor: " + error);
   }
